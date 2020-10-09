@@ -1,7 +1,9 @@
 #include <iostream>
+#include "NesEmulator.hpp"
 
 int main(int, char**)
 {
-    std::cout << "Nes emulator" << std::endl;
+    Nes::NesEmulator emulator;
+    emulator.run("game.rom");
     return 0;
 }

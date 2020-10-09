@@ -24,14 +24,26 @@ link_directories(${EXTERNAL_INSTALL_LOCATION}/lib)
 
 set(UTSource
 ../../UT/main.cpp
+../../UT/Olc6502Tests.cpp
 )
-
-add_executable(NesEmulatorTestsExe ${UTSource})
-add_dependencies(NesEmulatorTestsExe googletest gmock)
-target_link_libraries(NesEmulatorTestsExe gtest gmock gtest_main pthread)
 
 set(Source
-../../Source/main.cpp
+../../Source/Cpu/AddressingModes.cpp
+../../Source/Cpu/Opcodes.cpp
+../../Source/Cpu/Olc6502.cpp
+../../Source/Bus/Bus.cpp
+../../Source/NesEmulator.cpp
 )
-#add_library(NesEmulatorLib ${Source})
-add_executable(NesEmulatorExe ${Source})
+
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../Source/
+)
+
+add_library(NesEmulatorLib ${Source})
+
+add_executable(NesEmulatorTestsExe ${UTSource})
+add_dependencies(NesEmulatorTestsExe NesEmulatorLib googletest)
+target_link_libraries(NesEmulatorTestsExe NesEmulatorLib gtest gmock gtest_main pthread)
+
+add_executable(NesEmulatorExe ../../Source/main.cpp)
+target_link_libraries(NesEmulatorExe NesEmulatorLib pthread)
